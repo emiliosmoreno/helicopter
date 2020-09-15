@@ -33,7 +33,8 @@ class Bomber:
         
 class Helicopter:
     def __init__(self):
-        self.CONST_MAX_INERCIA=10
+        
+        self.CONST_MAX_INERCIA=10 
         self.CONST_incremento_inerciaY=0.01
         self.CONST_incremento_inerciaX=0.01
         self.CONST_GRAVITY=0
@@ -41,7 +42,7 @@ class Helicopter:
         self.bullet_speed=5
         self.bomber_speed=4
         self.screen = pygame.display.set_mode((400, 708))
-        self.helicopter = pygame.Rect(65, 50, 50, 50)
+        self.helicopter = pygame.Rect(30, 25, 50, 50)
         
         self.bullets =[]
         self.bombers = []
@@ -67,6 +68,8 @@ class Helicopter:
         self.offset = random.randint(-110, 110)
         self.inerciaY=0
         self.inerciaX=0
+        
+        
     def updateWalls(self):
         self.wallx -= 2
         if self.wallx < -80:
@@ -133,11 +136,17 @@ class Helicopter:
     def shootBomber(self):
         new_bomber = Bomber( self.screen, self.posX,self.posY, self.bomber_speed)
         self.bombers.append(new_bomber)
-        
+    
+    def pintarMarcador(self): 
+        self.screen.blit(self.font.render(str(self.counter),
+                                     -1,
+                                     (255, 255, 255)),
+                        (200, 50))
+              
     def run(self):
         clock = pygame.time.Clock()
         pygame.font.init()
-        font = pygame.font.SysFont("Arial", 50)
+        self.font = pygame.font.SysFont("Arial", 50)
         while True:
             clock.tick(60)
             for event in pygame.event.get():
@@ -179,10 +188,9 @@ class Helicopter:
                              (self.wallx, 360 + self.gap - self.offset))
             self.screen.blit(self.wallDown,
                              (self.wallx, 0 - self.gap - self.offset))
-            self.screen.blit(font.render(str(self.counter),
-                                         -1,
-                                         (255, 255, 255)),
-                             (200, 50))
+            
+            self.pintarMarcador()
+            
             if self.dead:
                 self.sprite = 4
                 
